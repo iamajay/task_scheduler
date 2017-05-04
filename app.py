@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, jsonify, url_for
-from sqlalchemy import create_engine, asc
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, TaskList, Scheduler, BasicCronInsight, TrackingKey
 import random
@@ -10,7 +10,6 @@ import uuid
 from datetime import datetime, timedelta
 from ukey import gen_random_range
 
-
 app = Flask(__name__)
 
 # Connect to Database and create database session
@@ -20,8 +19,25 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+@app.route('/cron/')
+def cronTask():
+    scheduler = session.query(Scheduler).filter_by(Status=0).all()
+    for instance in scheduler:
+        now = datetime.now()
+        schedule_time = instance.ScheduledTime
+        schedule_time = datetime.strptime(schedule_time, "%H:%M:%S")
+        schedule_time = now.replace(hour=schedule_time.time().hour, minute=schedule_time.time().minute, second=schedule_time.time().second, microsecond=0)
+        if (schedule_time < now):
+            instance.Status=1
+            session.add(instance)
+            session.commit()
+
+
 
 @app.route('/')
+def home():
+    return redirect('/scheduler')
+
 @app.route('/scheduler/')
 def schedule():
     try:

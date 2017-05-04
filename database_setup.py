@@ -66,7 +66,6 @@ class TrackingKey(Base):
     UniqueId = Column(String(32), primary_key=True)
     TrackKey = Column(String(5), primary_key=True)
     TaskUniqueId = Column(String(32), ForeignKey('tasklist.UniqueId'))
-    CreatedTime = Column(String(250))
     tasklist = relationship(TaskList)
 
 
@@ -78,7 +77,7 @@ class TrackingKey(Base):
             'UniqueId': self.UniqueId,
             'TrackingKey': self.TrackKey,
             'TaskUniqueId': self.TaskUniqueId,
-            'CreatedTime': self.CreatedTime,
+            'CreatedTime': self.CreatedTime
         }
 
 
