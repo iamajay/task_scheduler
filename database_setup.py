@@ -13,6 +13,7 @@ class TaskList(Base):
     UniqueId = Column(String(32), primary_key=True)
     Title = Column(String(250), nullable=False)
     CreatedTime = Column(String(250), nullable=False)
+    CreatedDate = Column(String(250), nullable=False)
    
     @property
     def serialize(self):
@@ -21,6 +22,7 @@ class TaskList(Base):
             'Title': self.Title,
             'UniqueId': self.UniqueId,
             'CreatedTime': self.CreatedTime,
+            'CreatedDate': self.CreatedDate,
         }
 
 
@@ -48,7 +50,8 @@ class BasicCronInsight(Base):
 
     UniqueId = Column(String(32), primary_key=True)
     Compleated= Column(Integer)
-    ExecutionTime = Column(String(250))
+    ExecutionTime = Column(String(250),nullable=False)
+    CronDate = Column (String(250),nullable=False)
 
     @property
     def serialize(self):
@@ -57,6 +60,7 @@ class BasicCronInsight(Base):
             'UniqueId': self.UniqueId,
             'ExecutionTime': self.ExecutionTime,
             'Compleated': self.Compleated,
+            'CronDate': self.CronDate,
         }
 
 
@@ -64,8 +68,9 @@ class TrackingKey(Base):
     __tablename__ = 'trackingkey'
 
     UniqueId = Column(String(32), primary_key=True)
-    TrackKey = Column(String(5), primary_key=True)
+    TrackKey = Column(String(5), nullable= False)
     TaskUniqueId = Column(String(32), ForeignKey('tasklist.UniqueId'))
+    Time = Column(String(250), nullable= False)
     tasklist = relationship(TaskList)
 
 
@@ -77,7 +82,7 @@ class TrackingKey(Base):
             'UniqueId': self.UniqueId,
             'TrackingKey': self.TrackKey,
             'TaskUniqueId': self.TaskUniqueId,
-            'CreatedTime': self.CreatedTime
+            'CreatedTime': self.Time
         }
 
 
