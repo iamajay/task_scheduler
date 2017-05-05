@@ -29,7 +29,7 @@ def schedule():
         today= str(datetime.now().strftime("%y-%m-%d"))
         new_tasks = TaskList(Title=title,UniqueId=uid,CreatedTime=current_time,CreatedDate=today)
         random_key= gen_random_range(16)
-        seconds=50
+        seconds=300
         scheduled_time= datetime.now() + timedelta(seconds=seconds)
         scheduled_time= str(scheduled_time.strftime('%H:%M:%S'))
         new_scheduler = Scheduler(UniqueKey=random_key,TaskUniqueId=uid,ScheduledTime=scheduled_time, Status= 0)
