@@ -1,6 +1,0 @@
-{% for row_index in range(x['date']|count) %}
-    <tr>
-      <td>{{ x['date'][row_index]|tojson|safe }}</td>
-      <td>{{ x['users'][row_index] }}</td>
-    </tr>
-{% endfor %}
